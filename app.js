@@ -33,7 +33,14 @@ Book.init({
 
       //error holds the details about an error  
     } catch (error){
-        console.error('Error connecting to the database: ', error);
+        //if the error is SequelizeValidationError return the error messages array 
+        if (error.name === 'SequelizeValidationError') {
+            const errors = error.errors.map(err => err.message);
+            console.error('Validation errors: ', errors);
+        //rethrow other types of errors caught by catch    
+        } else {
+            throw error;
+        }
     }
 
 })();
