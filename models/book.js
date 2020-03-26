@@ -9,11 +9,23 @@ module.exports = (sequelize) => {
     Book.init({
         title: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    //custom error message 
+                    msg: 'Please provide a value for "title"',
+                }
+            },
         },
         author: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    //custom error message 
+                    msg: 'Please provide a value for "author"',
+                }
+            },
         },
         genre: Sequelize.STRING,
         year: Sequelize.INTEGER
