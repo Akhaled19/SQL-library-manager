@@ -3,6 +3,10 @@ const Sequelize = require('sequelize');
 const express = require('express');
 const app = express();
 
+                            /*Middleware*/
+//set up the 'view engine' to pug 
+app.set('view engine', 'pug');                            
+
 
 //Sequelize instance 
 //initialize the SQLite database & connect  
