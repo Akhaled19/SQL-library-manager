@@ -1,5 +1,7 @@
+'use strict';
+
 //requiring modules 
-const Sequelize = require('Sequelize');
+const Sequelize = require('sequelize');
 
 //export the initialized Book model   
 module.exports = (sequelize) => {
@@ -32,4 +34,4 @@ module.exports = (sequelize) => {
     }, {sequelize});
     
     return Book;
-}
+};
