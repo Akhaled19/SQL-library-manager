@@ -1,20 +1,22 @@
 extends layout
 
 block main
-    p
-        a.button(href='book_detail.html') Create New Book
-    table
-        thead
-            tr
-                th Title
-                th Author
-                th Genre
-                th Year
-        //- pug each in loop through the book table         
-        tbody
-            tr
-                td
-                    a(href='book_detail.html') A Brief History of Time
-                td Stephen Hawking
-                td Non Fiction
-                td 1988
+    body
+        h1 Books
+        p
+            a.button(href='book_detail.html') Create New Book
+        table
+            thead
+                tr
+                    th Title
+                    th Author
+                    th Genre
+                    th Year
+            //- pug each in loop through the book table         
+            tbody
+                tr
+                    td
+                        a(href='book_detail.html') A Brief History of Time
+                    td Stephen Hawking
+                    td Non Fiction
+                    td 1988

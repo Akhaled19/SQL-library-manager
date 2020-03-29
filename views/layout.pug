@@ -1,10 +1,7 @@
 doctype html
-html
+html(lang="en")
     head
-        //- make the title dynamic 
-        title #{Book}
+        //- pass it a variable 
+        title= title
         link(href="../public/stylesheets/style.css" rel="stylesheet")
-    body
-        //- also make this dynamic
-        h1 #{Title}
-        block main
+    block main
