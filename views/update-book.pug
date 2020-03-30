@@ -1,0 +1,12 @@
+extends layout
+
+block main
+    h1 Update Book
+    form(action="/books/:id" method="post")
+        include new-book
+        p
+           input(type="submit" value="update Book")
+        p
+            a.button(href='/books') Cancel
+        p
+            a.button(href="/books/:id/delete") Delete Book
