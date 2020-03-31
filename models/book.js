@@ -9,6 +9,11 @@ module.exports = (sequelize) => {
     class Book extends Sequelize.Model {}
     //initialize & configure the model
     Book.init({
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
         title: {
             type: Sequelize.STRING,
             allowNull: false,
@@ -29,8 +34,12 @@ module.exports = (sequelize) => {
                 }
             },
         },
-        genre: Sequelize.STRING,
-        year: Sequelize.INTEGER
+        genre: {
+            type: Sequelize.STRING
+        },
+        year: {
+            type: Sequelize.INTEGER
+        }
     }, {sequelize});
     
     return Book;
