@@ -51,7 +51,7 @@ router.post('/new', asyncHandler(async(req, res)=>{
             //new instance with build method when there is minor errors 
             //once the minor error is fixed, the non-persistent model instance it will be stored in the database by the create()  
             book = await Book.build(req.body);
-            res.render('new-book', {book: book, errors: error.errors, title: "New Book"} );
+            res.render('form', {book: book, errors: error.errors, title: "New Book"} );
         } else {
             // error caught in the asyncHandler's catch block
             throw error; 
@@ -61,9 +61,14 @@ router.post('/new', asyncHandler(async(req, res)=>{
 
 /* Get book details form */
 router.get('/:id', asyncHandler(async(req, res)=>{
-    //show book detail form 
     const book = await Book.findByPk(req.params.id);
-    res.render('update-book', {book: book, title: book.title });
+    //if the book exists, render the book detail form 
+    if(book) {
+        res.render('update-book', {book: book, title: book.title });
+    // otherwise, send a 404 status to the client    
+    } else {
+        res.sendStatus(404);
+    }
 }));
 
 /* Post book details updates */
@@ -78,20 +83,24 @@ router.post('/:id', asyncHandler(async(req, res)=>{
         } else {
             res.sendStatus(404);
         }
+        res.redirect('/books/' + book.id);
 
     }catch(error){
         //check if there is an error with the update
         if(error.name === "SquelizeValidationError") {
-            book = await Book.findByPk(req.params.id);  
+            book = await Book.build(req.body); 
+            //make sure correct book gets updated
+            book.id = req.params.id; 
+            res.render('update-book', {book: book, errors: error.errors, title: 'Edit Book'})
         }else {
-        }
+            throw error;
+        }  
     }  
 }));
 
 /* Post delete book */
 router.post('/:id/delete', asyncHandler(async(req, res)=>{
     //Deletes a book. Careful, this can't be undone. It can be helpful to create a new "test" book to test deleting
-    res.send('delete-book');
     const book = await Book.findByPk(req.params.id);
     await book.destroy();
     res.redirect('/books');
