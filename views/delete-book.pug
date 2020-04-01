@@ -2,7 +2,7 @@ extends layout
 
 block content
     //- change 'this book' to template title
-    h2 Do you really want to delete this book?
+    h2 Do you really want to delete #{book.title}?
     form(action="/books/:id/delete", method="post")
         p 
             input(type="submit" value="Delete Book")

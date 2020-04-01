@@ -1,8 +1,10 @@
-const Sequelize = require('sequelize');
+const {Sequelize, Op} = require('sequelize');
 const express = require('express');
-const router = express.Router();
+const {Router} = express.Router();
 const Book = require('../models').Book;
-const {Op} = Sequelize.Op;
+
+
+const router = new Router();
 
 /* Handler function to wrap each route */
 function asyncHandler(callback) {
@@ -18,55 +20,79 @@ function asyncHandler(callback) {
 /* Render books listing */
 router.get('/', asyncHandler(async(req, res) => {
     //Home route should redirect to the /books route 
-    res.render('index');
+    res.redirect('/books');
 }));
 
 /* Get books listing */
-router.get('/books', asyncHandler(async(req, res)=> {
+router.get('/', asyncHandler(async(req, res)=> {
     //shows the full list of the books 
-    res.render('index');
+    const books = await Book.findAll();
+    res.render('index', {books: books, title: 'Books'} );
 }));
 
 /* Get the new book form */
-router.get('/books/new', asyncHandler(async(req, res) => {
+router.get('/new', asyncHandler(async(req, res) => {
     //shows the create new book form
-    res.render('form');
+    res.render('form', { book:{}, title: 'New Book'});
 }));
 
 /* Post a new book entry */
-router.post('/books/new', asyncHandler(async(req, res)=>{
+router.post('/new', asyncHandler(async(req, res)=>{
     //posts a new book to the database
     let book;
     try {
         //new instance with create method when there is NO errors
         book = await Book.create(req.body);
-    } catch {
-       if() {
+        res.redirect('/books/' + book.id);
+
+    } catch(error) {
+        //checking the error
+        if(error.name === "SequelizeValidationError") {
             //new instance with build method when there is minor errors 
+            //once the minor error is fixed, the non-persistent model instance it will be stored in the database by the create()  
             book = await Book.build(req.body);
-            await book.save();
-       } else {
-
-       }
+            res.render('new-book', {book: book, errors: error.errors, title: "New Book"} );
+        } else {
+            // error caught in the asyncHandler's catch block
+            throw error; 
+        }
     }
-
 }));
 
 /* Get book details form */
-router.get('/books/:id', asyncHandler(async(req, res)=>{
+router.get('/:id', asyncHandler(async(req, res)=>{
     //show book detail form 
-    const book = await Book.findByPk();
-    res.render('update-book');
+    const book = await Book.findByPk(req.params.id);
+    res.render('update-book', {book: book, title: book.title });
 }));
 
 /* Post book details updates */
-router.post('/books/:id', asyncHandler(async(req, res)=>{
+router.post('/:id', asyncHandler(async(req, res)=>{
     //updates book info in the database
-    
+    let book;
+    try{
+        book = await Book.findByPk(req.params.id);
+        if(books) {
+            await book.update(req.body);
+            res.redirect('/books/' + book.id);
+        } else {
+            res.sendStatus(404);
+        }
+
+    }catch(error){
+        //check if there is an error with the update
+        if(error.name === "SquelizeValidationError") {
+            book = await Book.findByPk(req.params.id);  
+        }else {
+        }
+    }  
 }));
 
 /* Post delete book */
-router.post('/books/:id/delete', asyncHandler(async(req, res)=>{
+router.post('/:id/delete', asyncHandler(async(req, res)=>{
     //Deletes a book. Careful, this can't be undone. It can be helpful to create a new "test" book to test deleting
     res.send('delete-book');
+    const book = await Book.findByPk(req.params.id);
+    await book.destroy();
+    res.redirect('/books');
 }));

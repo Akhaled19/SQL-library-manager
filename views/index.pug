@@ -10,12 +10,12 @@ block content
                 th Title
                 th Author
                 th Genre
-                th Year
-            //- pug each in loop through the book table         
+                th Year   
         tbody
-            tr
-                td
-                    a(href='/books/:id') A Brief History of Time
-                td Stephen Hawking
-                td Non Fiction
-                td 1988
+            each book in Books.rows   
+                tr
+                    td
+                        a(href=`/books/${book.id}`) #{book.title} 
+                    td #{book.author}
+                    td #{book.genre}
+                    td #{book.year}
