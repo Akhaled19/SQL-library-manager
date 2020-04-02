@@ -18,8 +18,8 @@ const db = {
 
 db.models.Book = require('./book.js')(sequelize);
 
-module.exports = db; //export 'db' object 
 
 db.sequelize = sequelize; //Add any new model to the 'db' object
 db.Sequelize = Sequelize; //Assign the Sequelize module to a `Sequelize` property in the `db` object
 
+module.exports = db; //export 'db' object 

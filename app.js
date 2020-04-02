@@ -6,9 +6,6 @@ const sequelize = require('./models').sequelize;
 //if the req.body doesn't return anything back then run this command in the terminal: npm install body-parser
 const bodyParse = require('body-parser');
 
-const books = require('./routes/books');
-const routes = require('./routes/index');
-
 const app = express();
 
                             /*Middleware*/
@@ -17,12 +14,22 @@ app.set('view engine', 'pug');
 
 //view engine setup
 app.use(express.json());
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: false}));
+
+                            /* Routes */
+//import router 
+const mainRoute = require('./routes');
+const bookRoute = require('./routes/books');
+
+//use imported routes 
+app.use('/', mainRoute);
+app.use('/books', bookRoute);
+
 
 
                         /*Start Server*/
-sequelize.async().then(() => {
+sequelize.sync().then(() => {
     app.listen(3000, () => {
-        console.log('This application is running on localhost:3000')
-    })
+        console.log('This application is running on localhost:3000');
+    });
 });

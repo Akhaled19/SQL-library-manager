@@ -1,10 +1,9 @@
-const {Sequelize, Op} = require('sequelize');
+const Sequelize = require('sequelize');
 const express = require('express');
-const {Router} = express.Router();
+const router = express.Router();
 const Book = require('../models').Book;
 
-
-const router = new Router();
+//const router = new Router();
 
 /* Handler function to wrap each route */
 function asyncHandler(callback) {
@@ -17,11 +16,6 @@ function asyncHandler(callback) {
     }
 }
 
-/* Render books listing */
-router.get('/', asyncHandler(async(req, res) => {
-    //Home route should redirect to the /books route 
-    res.redirect('/books');
-}));
 
 /* Get books listing */
 router.get('/', asyncHandler(async(req, res)=> {
@@ -105,3 +99,5 @@ router.post('/:id/delete', asyncHandler(async(req, res)=>{
     await book.destroy();
     res.redirect('/books');
 }));
+
+module.exports = router;
