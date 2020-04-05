@@ -24,11 +24,13 @@ router.get('/', asyncHandler(async(req, res)=> {
     res.render('index', {books: books, title: 'Books'} );
 }));
 
+
 /* Get the new book form */
 router.get('/new', asyncHandler(async(req, res) => {
     //shows the create new book form
     res.render('form', { book:{}, title: 'New Book'});
 }));
+
 
 /* Post a new book entry */
 router.post('/new', asyncHandler(async(req, res)=>{
@@ -53,6 +55,7 @@ router.post('/new', asyncHandler(async(req, res)=>{
     }
 }));
 
+
 /* Get book details form */
 router.get('/:id', asyncHandler(async(req, res)=>{
     const book = await Book.findByPk(req.params.id);
@@ -64,6 +67,7 @@ router.get('/:id', asyncHandler(async(req, res)=>{
         res.sendStatus(404);
     }
 }));
+
 
 /* Post book details updates */
 router.post('/:id', asyncHandler(async(req, res)=>{
@@ -90,6 +94,19 @@ router.post('/:id', asyncHandler(async(req, res)=>{
             throw error;
         }  
     }  
+}));
+c
+
+/* Get delete book */
+router.get('/:id/delete', asyncHandler(async(req,res)=>{
+    const book = await Book.findByPk(req.params.id);
+    //if the book exists, render the book detail form 
+    if(book) {
+        res.render('delete-book', {book: book, title: book.title });
+    // otherwise, send a 404 status to the client    
+    } else {
+        res.sendStatus(404);
+    }
 }));
 
 /* Post delete book */

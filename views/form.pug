@@ -1,13 +1,13 @@
 extends layout
 
 block content
-h1 Create Book Entry
+    h1 Create Book Entry
 
-include form-error
+    include form-error
 
-form(action="/books/new", method="post") 
-    include new-book
-    p
-        input(type="submit" value="Create New Book")
-    p
-        a.button(href="/books") Cancel
+    form(action="/books/new", method="post") 
+        include new-book
+        p
+            input(type="submit" value="Create New Book")
+        p
+            a.button(href="/books") Cancel
