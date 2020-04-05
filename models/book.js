@@ -1,4 +1,4 @@
-'use strict';
+'use strick';
 
 //requiring modules 
 const Sequelize = require('sequelize');
