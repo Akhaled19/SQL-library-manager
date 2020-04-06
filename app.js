@@ -22,7 +22,7 @@ const mainRoute = require('./routes');
 const bookRoute = require('./routes/books');
 
 //use imported routes 
-app.use('/', mainRoute);
+app.use(mainRoute);
 app.use('/books', bookRoute);
 
 

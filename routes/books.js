@@ -46,7 +46,7 @@ router.post('/new', asyncHandler(async(req, res)=>{
         if(error.name === "SequelizeValidationError") {
             //new instance with build method when there is minor errors 
             //once the minor error is fixed, the non-persistent model instance it will be stored in the database by the create()  
-            book = await Book.build(req.body);
+            book = await Book.build(req.body); //keep the filled inputs
             res.render('form', {book: book, errors: error.errors, title: "New Book"} );
         } else {
             // error caught in the asyncHandler's catch block
@@ -69,18 +69,13 @@ router.get('/:id', asyncHandler(async(req, res)=>{
 }));
 
 
-/* Post book details updates */
+/* Post update book details in db /books/:id */
 router.post('/:id', asyncHandler(async(req, res)=>{
     //updates book info in the database
-    let book;
+    const book = await Book.findByPk(req.params.id);
     try{
-        book = await Book.findByPk(req.params.id);
-        if(books) {
-            await book.update(req.body);
-            res.redirect('/books/' + book.id);
-        } else {
-            res.sendStatus(404);
-        }
+        //new instance with update method when there is NO errors
+        await book.update(req.body);
         res.redirect('/books/' + book.id);
 
     }catch(error){
@@ -95,18 +90,13 @@ router.post('/:id', asyncHandler(async(req, res)=>{
         }  
     }  
 }));
-c
+
 
 /* Get delete book */
 router.get('/:id/delete', asyncHandler(async(req,res)=>{
     const book = await Book.findByPk(req.params.id);
-    //if the book exists, render the book detail form 
-    if(book) {
-        res.render('delete-book', {book: book, title: book.title });
-    // otherwise, send a 404 status to the client    
-    } else {
-        res.sendStatus(404);
-    }
+    //render the book detail form 
+    res.render('delete-book', {book: book, title: book.title });
 }));
 
 /* Post delete book */
