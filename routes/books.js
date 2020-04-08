@@ -76,7 +76,7 @@ router.post('/:id', asyncHandler(async(req, res)=>{
     try{
         //new instance with update method when there is NO errors
         await book.update(req.body);
-        res.redirect('/books/' + book.id);
+        res.redirect('/books');
 
     }catch(error){
         //check if there is an error with the update

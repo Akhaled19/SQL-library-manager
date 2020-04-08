@@ -1,10 +1,10 @@
 body {
   padding: 10px 50px 50px;
-  font: 180px "Garamond", serif;
+  font: 18px "Garamond", serif;
 }
 
 a {
-  color: #019875;
+  color: grey;
   text-decoration: none;
   font-weight: bold;
   transition: 0.4s;

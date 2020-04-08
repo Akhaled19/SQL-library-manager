@@ -2,6 +2,8 @@
 //const Sequelize = require('sequelize');
 const express = require('express');
 const sequelize = require('./models').sequelize;
+const logger = require('morgan');
+
 //middleware 
 //if the req.body doesn't return anything back then run this command in the terminal: npm install body-parser
 const bodyParse = require('body-parser');
@@ -15,6 +17,8 @@ app.set('view engine', 'pug');
 //view engine setup
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(logger('dev'));
+app.use('/static', express.static('public'));
 
                             /* Routes */
 //import router 
