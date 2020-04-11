@@ -18,26 +18,31 @@ function asyncHandler(callback) {
 }
 
 /* Get books listing */
-router.get('/', asyncHandler(async(req, res) => {
-    const page = req.query.page //page number
-    const limit = 7
-    const offset = (page - 1) * limit;
-    const pages = Math.ceil(books.count / limit); //calc for number of pages
+router.get('/home/:page', asyncHandler(async(req, res, next) => {
+    const page = req.params.page || 0; //page number
+    const number = 7
+    const limit = number;
+    const offset = page * number;
+    //const query = req.query.term;
+    
         
     //shows the pages of the list of the books 
     const books = await Book.findAndCountAll({
-        order: [["id", "ASC"]],
+        order: [[ "title", "ASC"]],
         limit: limit,
         offset: offset
     });
 
     //create an array of page links to iterate through in pug
+    const pages = Math.ceil(books.count / limit); //calc for number of pages
     let pageLinkArray = [];
-    for(let i = 1 ; i <= pages; i++ ){
+    for(let i = 0 ; i <= pages; i++ ){
         pageLinkArray.push(i);
     }
 
-    res.render('index', {books: books, title: 'Books', pageLinkArray: pageLinkArray } );
+    res.render('index', {books: books.rows, title: 'Books', pageLinkArray: pageLinkArray, page } );
+    
+    next()
 }));
 
 
