@@ -1,5 +1,6 @@
 const express = require('express');
-//const Sequelize = require('sequelize');
+const Sequelize = require('sequelize');
+//const Op = Sequelize.Op;
 const router = express.Router();
 const Book = require('../models').Book;
 
@@ -16,13 +17,36 @@ function asyncHandler(callback) {
     }
 }
 
+/* Get books listing */
+router.get('/', asyncHandler(async(req, res) => {
+    const page = req.query.page //page number
+    const limit = 7
+    const offset = (page - 1) * limit;
+    const pages = Math.ceil(books.count / limit); //calc for number of pages
+        
+    //shows the pages of the list of the books 
+    const books = await Book.findAndCountAll({
+        order: [["id", "ASC"]],
+        limit: limit,
+        offset: offset
+    });
+
+    //create an array of page links to iterate through in pug
+    let pageLinkArray = [];
+    for(let i = 1 ; i <= pages; i++ ){
+        pageLinkArray.push(i);
+    }
+
+    res.render('index', {books: books, title: 'Books', pageLinkArray: pageLinkArray } );
+}));
+
 
 /* Get books listing */
-router.get('/', asyncHandler(async(req, res)=> {
-    //shows the full list of the books 
-    const books = await Book.findAll();
-    res.render('index', {books: books, title: 'Books'} );
-}));
+// router.get('/', asyncHandler(async(req, res)=> {
+//     //shows the full list of the books 
+//     const books = await Book.findAll();
+//     res.render('index', {books: books, title: 'Books'} );
+// }));
 
 
 /* Get the new book form */
