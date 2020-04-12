@@ -19,8 +19,8 @@ function asyncHandler(callback) {
 
 /* Get books listing */
 router.get('/home/:page', asyncHandler(async(req, res, next) => {
-    const page = req.params.page || 0; //page number
-    const number = 7
+    const page = req.params.page; //page number
+    const number = 5
     const limit = number;
     const offset = page * number;
     //const query = req.query.term;
@@ -36,7 +36,7 @@ router.get('/home/:page', asyncHandler(async(req, res, next) => {
     //create an array of page links to iterate through in pug
     const pages = Math.ceil(books.count / limit); //calc for number of pages
     let pageLinkArray = [];
-    for(let i = 0 ; i <= pages; i++ ){
+    for(let i = 1 ; i <= pages; i++ ){
         pageLinkArray.push(i);
     }
 

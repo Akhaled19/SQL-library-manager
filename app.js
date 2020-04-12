@@ -1,34 +1,45 @@
-//requiring modules 
-//const Sequelize = require('sequelize');
-const express = require('express');
-const sequelize = require('./models').sequelize;
-const logger = require('morgan');
+                        /*require dependencies*/
+// app.js requirements to be able to run the app 
 
+const express = require('express');
+const path = require('path');
+const sequelize = require('./models').sequelize;
 //middleware 
-//if the req.body doesn't return anything back then run this command in the terminal: npm install body-parser
 const bodyParse = require('body-parser');
 
+
 const app = express();
+const logger = require('morgan');
 
                             /*Middleware*/
-//set up the 'view engine' to pug 
-app.set('view engine', 'pug');    
+//set up the 'view engine'
+//app.set('views', path.join(__dirname, 'views'));
+
+
 
 //view engine setup
-app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(logger('dev'));
+app.use(express.json());
+//app.use(express.static(path.join(__dirname, 'public')));  
+app.set('view engine', 'pug');
+
+app.use(bodyParse.urlencoded({extended: false}));
 app.use('/static', express.static('public'));
 
-                            /* Routes */
+app.use(logger('dev'));
+
+                            /* Route Handler */
 //import router 
 const mainRoute = require('./routes');
+const indexRoute = require('./routes/index');
 const bookRoute = require('./routes/books');
+const errorRoute = require('./routes/error');
 
 //use imported routes 
-app.use(mainRoute);
+//app.use(mainRoute);
+app.use('/', indexRoute);
 app.use('/books', bookRoute);
-
+app.use(errorRoute);
 
 
                         /*Start Server*/
