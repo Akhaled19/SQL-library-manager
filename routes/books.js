@@ -18,11 +18,11 @@ function asyncHandler(callback) {
 }
 
 /* Get books listing */
-router.get('/home/:page', asyncHandler(async(req, res, next) => {
+router.get('/page/:page', asyncHandler(async(req, res, next) => {
     const page = req.params.page; //page number
     const number = 5
     const limit = number;
-    const offset = page * number;
+    const offset = page  * number;
     //const query = req.query.term;
     
         
@@ -105,7 +105,7 @@ router.post('/:id', asyncHandler(async(req, res)=>{
     try{
         //new instance with update method when there is NO errors
         await book.update(req.body);
-        res.redirect('/books');
+        res.redirect('/books/page/1');
 
     }catch(error){
         //check if there is an error with the update
@@ -133,7 +133,7 @@ router.post('/:id/delete', asyncHandler(async(req, res)=>{
     //Deletes a book. Careful, this can't be undone. It can be helpful to create a new "test" book to test deleting
     const book = await Book.findByPk(req.params.id);
     await book.destroy();
-    res.redirect('/books');
+    res.redirect('/books/page/1');
 }));
 
 module.exports = router;

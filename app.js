@@ -20,7 +20,7 @@ const logger = require('morgan');
 //view engine setup
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-//app.use(express.static(path.join(__dirname, 'public')));  
+app.use(express.static(__dirname + '/public'));  
 app.set('view engine', 'pug');
 
 app.use(bodyParse.urlencoded({extended: false}));
