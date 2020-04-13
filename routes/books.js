@@ -22,7 +22,7 @@ router.get('/page/:page', asyncHandler(async(req, res, next) => {
     const page = req.params.page; //page number
     const number = 5
     const limit = number;
-    const offset = (page -1)  * number;
+    const offset = page  * number;
     //const query = req.query.term;
     
         
