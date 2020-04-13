@@ -22,7 +22,7 @@ router.get('/page/:page', asyncHandler(async(req, res, next) => {
     const page = req.params.page; //page number
     const number = 5
     const limit = number;
-    const offset = page  * number;
+    const offset = (page -1)  * number;
     //const query = req.query.term;
     
         
@@ -40,9 +40,11 @@ router.get('/page/:page', asyncHandler(async(req, res, next) => {
         pageLinkArray.push(i);
     }
 
-    res.render('index', {books: books.rows, title: 'Books', pageLinkArray: pageLinkArray, page } );
-    
-    next()
+    if(page >= pageLinkArray.length) {
+        next();
+    }else {
+        res.render('index', {books: books.rows, title: 'Books', pageLinkArray: pageLinkArray, page } );
+    }
 }));
 
 
