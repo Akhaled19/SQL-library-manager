@@ -107,7 +107,7 @@ router.post('/:id', asyncHandler(async(req, res)=>{
     try{
         //new instance with update method when there is NO errors
         await book.update(req.body);
-        res.redirect('/books/page/1');
+        res.redirect('/books/page/0');
 
     }catch(error){
         //check if there is an error with the update
@@ -135,7 +135,7 @@ router.post('/:id/delete', asyncHandler(async(req, res)=>{
     //Deletes a book. Careful, this can't be undone. It can be helpful to create a new "test" book to test deleting
     const book = await Book.findByPk(req.params.id);
     await book.destroy();
-    res.redirect('/books/page/1');
+    res.redirect('/books/page/0');
 }));
 
 module.exports = router;

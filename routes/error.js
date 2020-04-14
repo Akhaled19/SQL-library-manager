@@ -23,7 +23,11 @@ router.use( (err, req, res, next) => {
         Stack: ${err.stack}.`
     );
     //render the error page
-    res.render('page-not-found')
+    if(err.status === 500) {
+        res.render('error')
+    }else {
+        res.render('page-not-found')
+    }
 });
 
 module.exports = router;
