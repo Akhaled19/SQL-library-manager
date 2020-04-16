@@ -1,6 +1,6 @@
 const express = require('express');
 const Sequelize = require('sequelize');
-//const Op = Sequelize.Op;
+const Op = Sequelize.Op;
 const router = express.Router();
 const Book = require('../models').Book;
 
@@ -17,14 +17,11 @@ function asyncHandler(callback) {
     }
 }
 
-/* Get books listing */
-router.get('/page/:page', asyncHandler(async(req, res, next) => {
-    const page = req.params.page; //page number
-    const number = 5
-    const limit = number;
-    const offset = page  * number;
-    //const query = req.query.term;
-    
+/* Get books page listing */
+router.get('/', asyncHandler(async(req, res, next) => {
+    const page = req.query.page || 0; //page number
+    const limit = 5;
+    const offset = page  * limit;
         
     //shows the pages of the list of the books 
     const books = await Book.findAndCountAll({
@@ -43,8 +40,56 @@ router.get('/page/:page', asyncHandler(async(req, res, next) => {
     if(page >= pageLinkArray.length) {
         next();
     }else {
-        res.render('index', {books: books.rows, title: 'Books', pageLinkArray: pageLinkArray, page } );
+        res.render('index', {books: books.rows, title: 'Books', pageLinkArray: pageLinkArray} );
     }
+}));
+
+/* Post books search input listing into page(s)*/
+router.get('/search', asyncHandler(async(req, res, next) => {
+    let {query} = req.query;
+    //make lowercase 
+    query = query.toLowerCase();
+
+    const books = await Book.findAndCountAll({
+        where: {
+            [Op.or]: [
+                {
+                    title: {
+                        [Op.Like]:`%${query}%`
+                    }
+                },
+                {
+                    author: {
+                        [Op.like]:`%${query}%`
+                    }
+                },
+                {
+                    genre: {
+                        [Op.like]:`%${query}%`
+                    }
+                },
+                {
+                    year: {
+                        [Op.like]:`%${query}%`
+                    }
+                }
+            ]
+        },
+    });
+
+    const limit = 5;
+    const pages = Math.ceil(books.count / limit);
+
+    let pageLinkArray = [];
+    for(let i = 0; i <= pages; i++) {
+        pageLinkArray.push(i);
+    }
+    if(page >= pageLinkArray.length) {
+        next();
+    }else {
+        res.render('index', {books: books.rows, title: Books, pageLinkArray})
+    }
+  
 }));
 
 
@@ -95,7 +140,8 @@ router.get('/:id', asyncHandler(async(req, res)=>{
         res.render('update-book', {book: book, title: book.title });
     // otherwise, send a 404 status to the client    
     } else {
-        res.sendStatus(404);
+        res.sendStatus(500);
+        res.sendMessage("Looks like the book you are trying to update does not exist");
     }
 }));
 
@@ -107,7 +153,7 @@ router.post('/:id', asyncHandler(async(req, res)=>{
     try{
         //new instance with update method when there is NO errors
         await book.update(req.body);
-        res.redirect('/books/page/0');
+        res.redirect('/');
 
     }catch(error){
         //check if there is an error with the update
@@ -135,7 +181,7 @@ router.post('/:id/delete', asyncHandler(async(req, res)=>{
     //Deletes a book. Careful, this can't be undone. It can be helpful to create a new "test" book to test deleting
     const book = await Book.findByPk(req.params.id);
     await book.destroy();
-    res.redirect('/books/page/0');
+    res.redirect('/');
 }));
 
 module.exports = router;
