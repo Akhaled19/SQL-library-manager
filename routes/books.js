@@ -46,7 +46,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
 }));
 
 /* Post books search input listing into page(s)*/
-router.post('/search', asyncHandler(async(req, res, next) => {
+router.get('/search', asyncHandler(async(req, res, next) => {
     let {query} = req.query;
     //make lowercase 
     query = query.toLowerCase();
@@ -79,7 +79,7 @@ router.post('/search', asyncHandler(async(req, res, next) => {
     });
 
     const limit = 5;
-    console.log(page);
+
     //const page = req.query.page || 0; //page number
     const pages = Math.ceil(books.count / limit);
 
@@ -87,12 +87,13 @@ router.post('/search', asyncHandler(async(req, res, next) => {
     for(let i = 0; i <= pages; i++) {
         pageLinkArray.push(i);
     }
-    // if(page >= pageLinkArray.length) {
+    // if(pages >= pageLinkArray.length) {
     //     next();
     // }else {
     //     res.render('index', {books: books.rows, title: "Books", pageLinkArray})
     // }
-  
+
+    res.render('index', {books: books.rows, title: "Books", pageLinkArray, pages})
 }));
 
 
