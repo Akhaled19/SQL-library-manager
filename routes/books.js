@@ -13,6 +13,7 @@ function asyncHandler(callback) {
             await callback(req, res, next)
         } catch(error) {
             res.status(500).send(error);
+            console.log(error);
         }
     }
 }
@@ -45,7 +46,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
 }));
 
 /* Post books search input listing into page(s)*/
-router.get('/search', asyncHandler(async(req, res, next) => {
+router.post('/search', asyncHandler(async(req, res, next) => {
     let {query} = req.query;
     //make lowercase 
     query = query.toLowerCase();
@@ -55,7 +56,7 @@ router.get('/search', asyncHandler(async(req, res, next) => {
             [Op.or]: [
                 {
                     title: {
-                        [Op.Like]:`%${query}%`
+                        [Op.like]:`%${query}%`
                     }
                 },
                 {
@@ -78,17 +79,19 @@ router.get('/search', asyncHandler(async(req, res, next) => {
     });
 
     const limit = 5;
+    console.log(page);
+    //const page = req.query.page || 0; //page number
     const pages = Math.ceil(books.count / limit);
 
     let pageLinkArray = [];
     for(let i = 0; i <= pages; i++) {
         pageLinkArray.push(i);
     }
-    if(page >= pageLinkArray.length) {
-        next();
-    }else {
-        res.render('index', {books: books.rows, title: Books, pageLinkArray})
-    }
+    // if(page >= pageLinkArray.length) {
+    //     next();
+    // }else {
+    //     res.render('index', {books: books.rows, title: "Books", pageLinkArray})
+    // }
   
 }));
 
@@ -141,7 +144,7 @@ router.get('/:id', asyncHandler(async(req, res)=>{
     // otherwise, send a 404 status to the client    
     } else {
         res.sendStatus(500);
-        res.sendMessage("Looks like the book you are trying to update does not exist");
+        //res.sendMessage("Looks like the book you are trying to update does not exist");
     }
 }));
 
