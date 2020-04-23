@@ -12,8 +12,9 @@ function asyncHandler(callback) {
         try {
             await callback(req, res, next)
         } catch(error) {
-            res.status(500).send(error);
-            console.log(error);
+            // res.status(500).send(error);
+            // console.log(error);
+            next(error);
         }
     }
 }
@@ -137,13 +138,14 @@ router.post('/new', asyncHandler(async(req, res)=>{
 
 
 /* Get book details form */
-router.get('/:id', asyncHandler(async(req, res)=>{
+router.get('/:id', asyncHandler(async(req, res, next)=>{
     const book = await Book.findByPk(req.params.id);
     //if the book exists, render the book detail form 
     if(book) {
         res.render('update-book', {book: book, title: book.title });
     // otherwise, send a 404 status to the client    
     } else {
+       next();
         res.sendStatus(500);
         //res.sendMessage("Looks like the book you are trying to update does not exist");
     }

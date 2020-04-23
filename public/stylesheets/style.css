@@ -18,10 +18,12 @@ a.button, input[type=submit] {
   color: white;
   background: #019875;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
-  padding: 10px 14px 12px;
+  padding: 10px 10px 12px;
   font-size: 14px;
   border-radius: 2px;
   cursor: pointer;
+  margin-left: 200px;
+  
 }
 
 form a.button, input[type=submit] {
@@ -48,13 +50,26 @@ ul {
   line-height: 1.3em;
 }
 
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
 h2 {
-  border-top: 2px solid #e7e7e7;
+  border: 2px solid darkslateblue;
   padding-top: 20px;
 }
 
+table {
+  margin: 0 auto;
+  padding-top: 90px;
+  width: 850px;
+  border: hidden;
+}
+
 th {
-  border-bottom: 2px solid #D8B493;
+  background-color: darkslateblue;
+  
   text-align: left;
   padding: 5px 20px 5px 10px;
 }
@@ -94,4 +109,21 @@ input[type=text] {
 
 .error {
   color: rgb(236, 15, 15);
+}
+
+.search-form {
+  padding: 10px 10px 12px;
+  font-size: 14px;
+  top: 50px;
+  position:absolute;
+  top: 100px;
+  right: 100px;
+}
+
+.search-submit {
+  outline: none;
+  border: 1px solid black;
+  padding: 0px 15px;
+  border-radius: 0 0.35em 0.35em 0;
+  cursor: pointer;
 }

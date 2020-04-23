@@ -10,11 +10,11 @@ router.use('*', (req, res, next) => {
 router.use( (err, req, res, next) => {
     //set the message to err.message
     res.locals.message = err.message;
-    //set the status to err.status or 500
-    res.locals.status = err.status || 500;
+    //set the status to err.status. If err.status is undefined send http status code 500
+    //res.locals.status = err.status || 500;
     //set the stack to err.stack
     res.locals.stack = err.stack;
-    //set the response status to the err.status or 500
+    //set the response status to the err.status. If err.status is undefined send http status code 500
     res.status(err.status || 500);
     //log the error details in the console 
     console.error(`Something went wrong!
@@ -24,9 +24,11 @@ router.use( (err, req, res, next) => {
     );
     //render the error page
     if(err.status === 500) {
-        res.render('error')
+       res.render('error');
+        
     }else {
         res.render('page-not-found')
+        next();
     }
 });
 
