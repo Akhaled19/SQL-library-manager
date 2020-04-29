@@ -1,6 +1,12 @@
 body {
   padding: 10px 50px 50px;
-  font: 18px "Garamond", serif;
+  font: 18px 'lato', sans-serif;
+  background-image: url(/book.png);
+  background-repeat: no-repeat;
+  background-size: cover; 
+}
+.background-image {
+  filter: blur(80px); 
 }
 
 a {
@@ -17,7 +23,7 @@ a {
 a.button, input[type=submit] {
   color: white;
   background: #019875;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'lato', sans-serif;
   padding: 10px 10px 12px;
   font-size: 14px;
   border-radius: 2px;
@@ -62,20 +68,32 @@ h2 {
 
 table {
   margin: 0 auto;
-  padding-top: 90px;
   width: 850px;
-  border: hidden;
+  max-width: 1000px;
+  padding-top: 60px;
+  padding-left: 10px;
+  padding-right: 10px;
+  max-width: 800px;
+	justify-content:center;
+	align-items:center;
+	min-height:80vh;
+ 
 }
 
 th {
-  background-color: darkslateblue;
-  
+  background: darkslateblue;
+  letter-spacing: 0.03em;
+  font-family: 'lato', sans-serif;
+  font-size: 14px;
+  color: #E7E7E7;
   text-align: left;
-  padding: 5px 20px 5px 10px;
+  padding: 15px 50px 15px 15px;
+  
 }
 
 tr {
   min-height: 50px;
+  
 }
 
 tr:nth-child(2n) {

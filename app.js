@@ -2,14 +2,15 @@
 // app.js requirements to be able to run the app 
 
 const express = require('express');
+const morgan = require('morgan');
 const path = require('path');
 const sequelize = require('./models').sequelize;
 //middleware 
 const bodyParse = require('body-parser');
 
-
+//create an express app
 const app = express();
-const logger = require('morgan');
+
 
                             /*Middleware*/
 //set up the 'view engine'
@@ -26,7 +27,8 @@ app.set('view engine', 'pug');
 app.use(bodyParse.urlencoded({extended: false}));
 app.use('/static', express.static('public'));
 
-app.use(logger('dev'));
+// setup morgan which gives us http request logging
+app.use(morgan('dev'));
 
                             /* Route Handler */
 //import router 
