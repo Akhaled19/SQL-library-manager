@@ -1,7 +1,5 @@
 body {
   font: 18px 'lato', sans-serif;
-}
-.background-image {
   background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url(../images/book.png) no-repeat center center fixed;
   /* Center and scale the image */
   -webkit-background-size: cover;
@@ -140,8 +138,10 @@ input[type=text] {
 
 .search-submit {
   outline: none;
-  border: 1px solid black;
-  padding: 0px 15px;
-  border-radius: 0 0.35em 0.35em 0;
+  border: 1px solid red;
+  font-size: 14px;
+  margin: 2px;
+  padding: 10px 15px;
+  border-radius: auto;
   cursor: pointer;
 }
