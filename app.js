@@ -13,22 +13,25 @@ const app = express();
 
 
                             /*Middleware*/
-//set up the 'view engine'
-//app.set('views', path.join(__dirname, 'views'));
-
-
-
-//view engine setup
-app.use(express.urlencoded({extended: false}));
-app.use(express.json());
-app.use(express.static(__dirname + '/public'));  
+//set up the 'view engine' to pug
 app.set('view engine', 'pug');
 
 app.use(bodyParse.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: false}));
+
+//serve the static files 
 app.use('/static', express.static('public'));
+app.use('/static', express.static('images'));
 
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
+
+//app.set('views', path.join(__dirname, 'views'));
+
+
+app.use(express.json());
+//app.use(express.static(__dirname + '/public'));  
+
 
                             /* Route Handler */
 //import router 
