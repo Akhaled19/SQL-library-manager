@@ -1,16 +1,18 @@
 body {
-  font: 18px 'lato', sans-serif;
-  background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url(../images/book.png) no-repeat center center fixed;
+  font: 18px 'Alegreya Sans SC';
+  background: url(../images/stack-books-black-background.jpg) no-repeat center center fixed;
   /* Center and scale the image */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  
 }
 
 a {
-  color: grey;
+  color: antiquewhite;
   text-decoration: none;
+  font-family: 'Alegreya Sans SC';
   font-weight: bold;
   transition: 0.4s;
 }
@@ -21,11 +23,12 @@ a {
 
 a.button, input[type=submit] {
   color: white;
-  background: #019875;
-  font-family: 'lato', sans-serif;
-  padding: 10px 10px 12px;
+  background: #ff414e;
+  font-family: Century Gothic, sans-serif;
+  
+  padding: 15px 15px 15px;
   font-size: 14px;
-  border-radius: 2px;
+  border-radius: 30%;
   cursor: pointer;
   margin-left: 200px;
   
@@ -33,7 +36,7 @@ a.button, input[type=submit] {
 
 form a.button, input[type=submit] {
   margin-left: 140px;
-  transition: 0.4s;
+  transition: 0.99s;
 }
 
 input[type=submit] {
@@ -41,7 +44,7 @@ input[type=submit] {
 }
 
   a.button:hover, input[type=submit]:hover {
-    background-color: #01b189;
+    background-color: #ff8928;
   }
 
 p {
@@ -57,7 +60,9 @@ ul {
 
 h1 {
   text-align: center;
+  letter-spacing: 0.05em;
   margin-bottom: 40px;
+  color: antiquewhite;
 }
 
 h2 {
@@ -79,27 +84,30 @@ table {
 }
 
 th {
-  background: darkslateblue;
-  letter-spacing: 0.03em;
-  font-family: 'lato', sans-serif;
-  font-size: 14px;
-  color: #E7E7E7;
-  text-align: left;
+  background: #ffcc00;
+  letter-spacing: 0.05em;
+  font-family: 'Alegreya Sans SC';
+  font-size: 18px;
+  color: black;
+  text-align: center;
   padding: 15px 50px 15px 15px;
-  
 }
 
 tr {
   min-height: 50px;
-  
+  background: rgba(0, 0, 0, 0);
 }
 
 tr:nth-child(2n) {
-  background: #E7E7E7;
+  background: rgba(0, 0, 0, 0);
 }
 
 td {
-  padding: 5px 20px 5px 10px;
+  color: antiquewhite;
+  text-align: center;
+  font-family: 'Alegreya Sans SC';
+  font-size: 18px;
+  letter-spacing: 0.03em;
 }
 
 label {
