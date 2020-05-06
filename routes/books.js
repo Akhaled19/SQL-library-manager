@@ -11,9 +11,8 @@ function asyncHandler(callback) {
     return async(req, res, next) => {
         try {
             await callback(req, res, next)
-        } catch(error) {
-            // res.status(500).send(error);
-            // console.log(error);
+        } catch (error) {
+            console.log(error);
             next(error);
         }
     }
@@ -128,7 +127,7 @@ router.post('/new', asyncHandler(async(req, res)=>{
             //new instance with build method when there is minor errors 
             //once the minor error is fixed, the non-persistent model instance it will be stored in the database by the create()  
             book = await Book.build(req.body); //keep the filled inputs
-            res.render('form', {book: book, errors: error.errors, title: "New Book"} );
+            res.render('form', {book, errors: error.errors, title: "New Book"} );
         } else {
             // error caught in the asyncHandler's catch block
             throw error; 
@@ -142,7 +141,7 @@ router.get('/:id', asyncHandler(async(req, res, next)=>{
     const book = await Book.findByPk(req.params.id);
     //if the book exists, render the book detail form 
     if(book) {
-        res.render('update-book', {book: book, title: book.title });
+        res.render('update-book', {book, title: book.title });
     // otherwise, send a 404 status to the client    
     } else {
        next();
@@ -155,19 +154,23 @@ router.get('/:id', asyncHandler(async(req, res, next)=>{
 /* Post update book details in db /books/:id */
 router.post('/:id', asyncHandler(async(req, res)=>{
     //updates book info in the database
-    const book = await Book.findByPk(req.params.id);
+    let book
     try{
-        //new instance with update method when there is NO errors
-        await book.update(req.body);
-        res.redirect('/');
-
-    }catch(error){
+        book = await Book.findByPk(req.params.id);
+        if(book) {
+            //new instance with update method when there is NO errors
+            await book.update(req.body);
+            res.redirect('/');
+        } else {
+            res.sendStatus(500).render("/error");
+        }
+    } catch (error) {
         //check if there is an error with the update
         if(error.name === "SquelizeValidationError") {
             book = await Book.build(req.body); 
-            //make sure correct book gets updated
+            //make sure the correct book gets updated
             book.id = req.params.id; 
-            res.render('update-book', {book: book, errors: error.errors, title: 'Edit Book'})
+            res.render('update-book', {book, errors: error.errors, title: 'Edit Book'})
         }else {
             throw error;
         }  

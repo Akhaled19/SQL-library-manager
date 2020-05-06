@@ -11,40 +11,50 @@ body {
 
 a {
   color: antiquewhite;
-  text-decoration: none;
-  font-family: 'Alegreya Sans SC';
+  font-family: Century Gothic, sans-serif;
   font-weight: bold;
   transition: 0.4s;
+  text-decoration: none;
 }
 
   a:hover {
     color: black;
   }
 
+  a.button {
+    margin-bottom: 20px;
+  }
+
 a.button, input[type=submit] {
-  color: white;
+  color: black;
   background: #ff414e;
   font-family: Century Gothic, sans-serif;
-  
-  padding: 15px 15px 15px;
+  font-weight: bold;
+  padding: 10px 14px 12px;
   font-size: 14px;
-  border-radius: 30%;
+  border-radius: 2px;
+  margin: 20px auto;
   cursor: pointer;
-  margin-left: 200px;
+  border-bottom: solid 4px #dcdcdc;
   
 }
 
 form a.button, input[type=submit] {
   margin-left: 140px;
-  transition: 0.99s;
+  transition: 0.4s;
 }
 
 input[type=submit] {
   border: 0;
+  border-bottom: solid 4px #dcdcdc;
 }
 
   a.button:hover, input[type=submit]:hover {
-    background-color: #ff8928;
+    background-color: rgba(0, 0, 0, 0);
+    color: #ff414e;
+    -ms-transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
   }
 
 p {

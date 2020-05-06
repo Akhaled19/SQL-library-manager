@@ -1,35 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const createError = require('http-errors');
+
  
  /* Error Handler Middleware */
-router.use('*', (req, res, next) => {
-    next(createError(404, 'This page dose not exist'));
+router.all('*', (req, res, next) => {
+    //next(createError(`404, Status: ${err.status} Message: ${err.message}, Stack: ${err.stack}`));
+    const err = new Error('Page not found');
+    err.status = 404;
+    console.error(`Something went wrong. Status: ${err.status}, Message: ${err.message}, Stack: ${err.stack}`)
+    next(err);
 });
 
 router.use( (err, req, res, next) => {
-    //set the message to err.message
+    //set locals, only prints detailed error in dev env 
     res.locals.message = err.message;
-    //set the status to err.status. If err.status is undefined send http status code 500
-    //res.locals.status = err.status || 500;
-    //set the stack to err.stack
-    res.locals.stack = err.stack;
-    //set the response status to the err.status. If err.status is undefined send http status code 500
-    res.status(err.status || 500);
-    //log the error details in the console 
-    console.error(`Something went wrong!
-        status: ${err.status}.
-        Message: ${err.message}.
-        Stack: ${err.stack}.`
-    );
+    res.locals.error = req.app.get('env') === 'development' ? err: {};
+    
+    console.log(err.message, err.status);
+
     //render the error page
-    if(err.status === 500) {
-       res.render('error');
-        
-    }else {
-        res.render('page-not-found')
-        next();
-    }
+    res.status = (err.status || 500);
+    res.render('error');
+    // if(err.status === 404) {
+    //     res.render('page-not-found');
+         
+    // } else {
+    //     res.render('error');
+    // }
 });
 
 module.exports = router;

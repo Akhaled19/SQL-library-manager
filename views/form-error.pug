@@ -2,4 +2,5 @@ if (errors)
     h2.error Oooops!
     ul.error
         each err in errors
-            li= err.message
+            li
+                =err.message

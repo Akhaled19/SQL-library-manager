@@ -3,7 +3,7 @@ extends layout
 block content
     h1 Update Book
 
-    include form-error
+    include form-error.pug
 
     form(action=`/books/${book.id}`, method="post")
         include new-book
