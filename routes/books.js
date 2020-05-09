@@ -1,8 +1,8 @@
 const express = require('express');
 const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
+const {Op} = Sequelize;
 const router = express.Router();
-const Book = require('../models').Book;
+const {Book} = require('../models');
 
 //const router = new Router();
 
@@ -13,6 +13,7 @@ function asyncHandler(callback) {
             await callback(req, res, next)
         } catch (error) {
             console.log(error);
+            res.status(500).send(error);
             next(error);
         }
     }
@@ -113,7 +114,7 @@ router.get('/new', asyncHandler(async(req, res) => {
 
 
 /* Post a new book entry */
-router.post('/new', asyncHandler(async(req, res)=>{
+router.post('/new', asyncHandler(async(req, res) => {
     //posts a new book to the database
     let book;
     try {
@@ -137,41 +138,35 @@ router.post('/new', asyncHandler(async(req, res)=>{
 
 
 /* Get book details form */
-router.get('/:id', asyncHandler(async(req, res, next)=>{
+router.get('/:id', asyncHandler(async(req, res) => {
     const book = await Book.findByPk(req.params.id);
     //if the book exists, render the book detail form 
     if(book) {
         res.render('update-book', {book, title: book.title });
     // otherwise, send a 404 status to the client    
     } else {
-       next();
         res.sendStatus(500);
-        //res.sendMessage("Looks like the book you are trying to update does not exist");
     }
 }));
 
 
 /* Post update book details in db /books/:id */
-router.post('/:id', asyncHandler(async(req, res)=>{
+router.post('/:id', asyncHandler(async(req, res) => {
     //updates book info in the database
     let book
-    try{
+    try {
         book = await Book.findByPk(req.params.id);
-        if(book) {
-            //new instance with update method when there is NO errors
-            await book.update(req.body);
-            res.redirect('/');
-        } else {
-            res.sendStatus(500).render("/error");
-        }
+        //new instance with update method when there is NO errors
+        await book.update(req.body);
+        res.redirect('/');
     } catch (error) {
         //check if there is an error with the update
-        if(error.name === "SquelizeValidationError") {
+        if(error.name === "SequelizeValidationError") {
             book = await Book.build(req.body); 
             //make sure the correct book gets updated
             book.id = req.params.id; 
             res.render('update-book', {book, errors: error.errors, title: 'Edit Book'})
-        }else {
+        } else {
             throw error;
         }  
     }  
@@ -181,12 +176,16 @@ router.post('/:id', asyncHandler(async(req, res)=>{
 /* Get delete book */
 router.get('/:id/delete', asyncHandler(async(req,res)=>{
     const book = await Book.findByPk(req.params.id);
-    //render the book detail form 
-    res.render('delete-book', {book: book, title: book.title });
+    //if the book exists, render the book detail form 
+    if(book) {
+        res.render('delete-book', {book, title: book.title });
+    } else {
+        res.sendStatus(500);
+    }
 }));
 
 /* Post delete book */
-router.post('/:id/delete', asyncHandler(async(req, res)=>{
+router.post('/:id/delete', asyncHandler(async(req, res) => {
     //Deletes a book. Careful, this can't be undone. It can be helpful to create a new "test" book to test deleting
     const book = await Book.findByPk(req.params.id);
     await book.destroy();
