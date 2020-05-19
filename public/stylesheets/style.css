@@ -6,13 +6,14 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  
+  text-transform: capitalize;
+  font-family: "Century Gothic", Helvetica, sans-serif;
+  font-size: 1em;
+  line-height: 1.5;
 }
 
 a {
   color: antiquewhite;
-  font-family: Century Gothic, sans-serif;
-  font-weight: bold;
   transition: 0.4s;
   text-decoration: none;
 }
@@ -21,19 +22,20 @@ a {
     color: black;
   }
 
-  a.button {
-    margin-bottom: 20px;
+  a:focus {
+    color: pink;
   }
+
+
+ 
 
 a.button, input[type=submit] {
   color: black;
   background: #ff414e;
-  font-family: Century Gothic, sans-serif;
-  font-weight: bold;
   padding: 10px 14px 12px;
   font-size: 14px;
   border-radius: 2px;
-  margin: 20px auto;
+  margin-top: 20px;
   cursor: pointer;
   border-bottom: solid 4px #dcdcdc;
   
@@ -70,14 +72,12 @@ ul {
 
 h1 {
   text-align: center;
+  font-size: 2em;
   letter-spacing: 0.05em;
-  margin-bottom: 40px;
+  padding-bottom: 50px;
   color: antiquewhite;
 }
 
-h2 {
-  padding-top: 20px;
-}
 
 table {
   margin: 0 auto;
@@ -97,7 +97,7 @@ th {
   background: #ffcc00;
   letter-spacing: 0.05em;
   font-family: 'Alegreya Sans SC';
-  font-size: 18px;
+  font-size: 1.50em;
   color: black;
   text-align: center;
   padding: 15px 50px 15px 15px;
@@ -116,7 +116,7 @@ td {
   color: antiquewhite;
   text-align: center;
   font-family: 'Alegreya Sans SC';
-  font-size: 18px;
+  font-size: 1.15em;
   letter-spacing: 0.03em;
 }
 
@@ -147,7 +147,7 @@ input[type=text] {
 
 .search-form {
   padding: 10px 10px 12px;
-  font-size: 14px;
+  font-size: 0.875em;
   top: 50px;
   position:absolute;
   top: 100px;

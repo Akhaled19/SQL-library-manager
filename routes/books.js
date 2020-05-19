@@ -21,9 +21,10 @@ function asyncHandler(callback) {
 
 /* Get books page listing */
 router.get('/', asyncHandler(async(req, res, next) => {
-    const page = req.query.page || 0; //page number
+    const page = req.query.page || 1; //page number
     const limit = 5;
     const offset = page  * limit;
+
         
     //shows the pages of the list of the books 
     const books = await Book.findAndCountAll({
@@ -34,6 +35,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
 
     //create an array of page links to iterate through in pug
     const pages = Math.ceil(books.count / limit); //calc for number of pages
+ 
     let pageLinkArray = [];
     for(let i = 1 ; i <= pages; i++ ){
         pageLinkArray.push(i);
@@ -41,69 +43,13 @@ router.get('/', asyncHandler(async(req, res, next) => {
 
     if(page >= pageLinkArray.length) {
         next();
-    }else {
-        res.render('index', {books: books.rows, title: 'Books', pageLinkArray: pageLinkArray} );
+    } else {
+         res.render('index', {books: books.rows, pageLinkArray, title: "Library Application"});
     }
 }));
 
-/* Post books search input listing into page(s)*/
-router.get('/search', asyncHandler(async(req, res, next) => {
-    let {query} = req.query;
-    //make lowercase 
-    query = query.toLowerCase();
-
-    const books = await Book.findAndCountAll({
-        where: {
-            [Op.or]: [
-                {
-                    title: {
-                        [Op.like]:`%${query}%`
-                    }
-                },
-                {
-                    author: {
-                        [Op.like]:`%${query}%`
-                    }
-                },
-                {
-                    genre: {
-                        [Op.like]:`%${query}%`
-                    }
-                },
-                {
-                    year: {
-                        [Op.like]:`%${query}%`
-                    }
-                }
-            ]
-        },
-    });
-
-    const limit = 5;
-
-    //const page = req.query.page || 0; //page number
-    const pages = Math.ceil(books.count / limit);
-
-    let pageLinkArray = [];
-    for(let i = 0; i <= pages; i++) {
-        pageLinkArray.push(i);
-    }
-    // if(pages >= pageLinkArray.length) {
-    //     next();
-    // }else {
-    //     res.render('index', {books: books.rows, title: "Books", pageLinkArray})
-    // }
-
-    res.render('index', {books: books.rows, title: "Books", pageLinkArray, pages})
-}));
 
 
-/* Get books listing */
-// router.get('/', asyncHandler(async(req, res)=> {
-//     //shows the full list of the books 
-//     const books = await Book.findAll();
-//     res.render('index', {books: books, title: 'Books'} );
-// }));
 
 
 /* Get the new book form */
@@ -143,9 +89,9 @@ router.get('/:id', asyncHandler(async(req, res) => {
     //if the book exists, render the book detail form 
     if(book) {
         res.render('update-book', {book, title: book.title });
-    // otherwise, send a 404 status to the client    
+    // otherwise, render the HTTP status code 500 template   
     } else {
-        res.sendStatus(500);
+        res.render('error');
     }
 }));
 
@@ -179,8 +125,9 @@ router.get('/:id/delete', asyncHandler(async(req,res)=>{
     //if the book exists, render the book detail form 
     if(book) {
         res.render('delete-book', {book, title: book.title });
+    //otherwise render the HTTP status code 500 template     
     } else {
-        res.sendStatus(500);
+        res.render('error');
     }
 }));
 
