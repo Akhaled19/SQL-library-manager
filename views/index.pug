@@ -5,7 +5,7 @@ block content
     p
         a.button(href='/books/new') Create New Book
     form.search-form(action="/books", method="post")
-        input.search-input(type="text",placeholder="title,author etc..." name='query')
+        input.search-input(type="text",placeholder="title,author etc..." name='searchtext')
         button.search-submit(type="submit") Search
     table
         thead
@@ -21,8 +21,6 @@ block content
                         a(href=`/books/${book.id}`) #{book.title} 
                     td #{book.author}
                     td #{book.genre}
-                    td #{book.year}
-    if query
-        include search-pagination
-    else             
+                    td #{book.year} 
+    .pagination                          
         include pagination

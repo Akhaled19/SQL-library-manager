@@ -21,11 +21,10 @@ function asyncHandler(callback) {
 
 /* Get books page listing */
 router.get('/', asyncHandler(async(req, res, next) => {
-    const page = req.query.page || 1; //page number
+    const page = parseInt(req.query.page) || 0; //page number
     const limit = 5;
     const offset = page  * limit;
-
-        
+  
     //shows the pages of the list of the books 
     const books = await Book.findAndCountAll({
         order: [[ "title", "ASC"]],
@@ -49,8 +48,102 @@ router.get('/', asyncHandler(async(req, res, next) => {
 }));
 
 
+/* Get books search input listing into page(s)*/
+// router.post('/', asyncHandler(async(req,res,next) => {
+//     //Declaring variables
+//     const resPerPage = 5; //result per page
+//     const page = req.params.page || 1 //page
+//     //if(req.query.search) {
+//         //Declaring query based/search variables  
+//         let {query} = req.query;
+//         //make lowercase 
+//         query = query.toLowerCase();
+//         const books = await Book.findAndCountAll({
+//             where: {
+//                 [Op.or]: [
+//                     {
+//                         title: {
+//                             [Op.like] : `%${query}%`
+//                         }
+//                     },
+//                     {
+//                         author: {
+//                             [Op.like] : `%${query}%`
+//                         }
+//                     },
+//                     {
+//                         genre: {
+//                             [Op.like] : `%${query}%`
+//                         }
+//                     },
+//                     {
+//                         year: {
+//                             [Op.like] : `%${query}%`
+//                         }
+//                     }
+//                 ]
+//             },
+//         });
+//         //counting how many pages are needed for the books found 
+//         const pages = Math.ceil(books.count / resPerPage);
+
+//         //Declaring an array for iterating though pages
+//         let pageLinkArray = [];
+//         for(let i = 1; i <= pages; i++) {
+//             pageLinkArray.push(i); 
+//         }
+//         //render the page
+//         res.render('index', { books: books.rows, pageLinkArray, title: "Search Result" })
+//     //}
+// }));
 
 
+//post search form to search the whole db.
+router.post('/', asyncHandler(async(req, res) => {
+    //capture the search form content
+    const search = req.body;
+    
+    //Have to use findAndCountAll so that the pagination works with search as well
+    //and doesn't break the home page. 
+    //using Op to use like search for each column
+    const books = await Book.findAndCountAll({ where: {
+        [Op.or]: 
+            [
+                {
+                    title: {
+                        [Op.like]: `%${search.searchtext.toLowerCase()}%`
+                    }
+                },
+                {
+                    author: {
+                        [Op.like]: `%${search.searchtext.toLowerCase()}%`
+                    }
+                },
+                {
+                    genre: {
+                        [Op.like]: `%${search.searchtext.toLowerCase()}%`
+                    }
+                },
+                {
+                    year: {
+                        [Op.like]: `%${search.searchtext.toLowerCase()}%`
+                    }
+                }
+            ]    
+    } });
+
+    const recordsPerPage = 10;
+    //getting the num of pages for pagination
+    const numOfPages = Math.ceil(books.count / recordsPerPage)
+
+    //creates an array to iterate through in pug for the pag links
+    const pageLinkArray = []
+    for (let i = 1; i <= numOfPages; i++) {
+        pageLinkArray.push(i);
+    }
+
+    res.render('index', { books: books.rows, title: 'All Books', pageLinkArray } );
+}));
 
 /* Get the new book form */
 router.get('/new', asyncHandler(async(req, res) => {
