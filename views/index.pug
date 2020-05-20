@@ -4,7 +4,7 @@ block content
     h1 Library Application
     p
         a.button(href='/books/new') Create New Book
-    form.search-form(action="/books", method="post")
+    form.search-form(action="/books/search/1", method="post")
         input.search-input(type="text",placeholder="title,author etc..." name='searchtext')
         button.search-submit(type="submit") Search
     table

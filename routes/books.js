@@ -99,14 +99,21 @@ router.get('/', asyncHandler(async(req, res, next) => {
 
 
 //post search form to search the whole db.
-router.post('/', asyncHandler(async(req, res) => {
+router.post('/search/:page', asyncHandler(async(req, res) => {
     //capture the search form content
     const search = req.body;
+    const page = parseInt(req.params.page) || 0; //page number
+    const limit = 5;
+    const offset = page  * limit;
     
     //Have to use findAndCountAll so that the pagination works with search as well
     //and doesn't break the home page. 
     //using Op to use like search for each column
-    const books = await Book.findAndCountAll({ where: {
+    const books = await Book.findAndCountAll({ 
+        order: [[ "title", "ASC"]],
+        limit: limit,
+        offset: offset,
+        where: {
         [Op.or]: 
             [
                 {
@@ -132,9 +139,9 @@ router.post('/', asyncHandler(async(req, res) => {
             ]    
     } });
 
-    const recordsPerPage = 10;
+    //const recordsPerPage = 10;
     //getting the num of pages for pagination
-    const numOfPages = Math.ceil(books.count / recordsPerPage)
+    const numOfPages = Math.ceil(books.count / limit)
 
     //creates an array to iterate through in pug for the pag links
     const pageLinkArray = []
