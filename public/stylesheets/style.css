@@ -1,6 +1,6 @@
 body {
   font: 18px 'Alegreya Sans SC';
-  background: url(../images/stack-books-black-background.jpg) no-repeat center center fixed;
+  background: url(../images/blue.jpg) no-repeat center center fixed;
   /* Center and scale the image */
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -12,6 +12,39 @@ body {
   line-height: 1.5;
 }
 
+h1 {
+  text-align: left;
+  font-size: 1.5em;
+  letter-spacing: 0.05em;
+  padding-bottom: 50px;
+  padding-left: 1em;
+  color: whitesmoke;
+}
+.title {
+  text-align: center;
+  font-size: 2.5em;
+}
+
+::selection {
+  background-color: cornflowerblue;
+  color: white;
+}
+
+/* Change autocomplete styles in WebKit */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+  background-color: hsla(214, 50%, 27%, 0.466);
+}
+
 a {
   color: antiquewhite;
   transition: 0.4s;
@@ -19,15 +52,9 @@ a {
 }
 
   a:hover {
-    color: black;
+    color: red;
   }
 
-  a:focus {
-    color: pink;
-  }
-
-
- 
 
 a.button, input[type=submit] {
   color: black;
@@ -46,14 +73,10 @@ form a.button, input[type=submit] {
   transition: 0.4s;
 }
 
-input[type=submit] {
-  border: 0;
-  border-bottom: solid 4px #dcdcdc;
-}
 
   a.button:hover, input[type=submit]:hover {
     background-color: rgba(0, 0, 0, 0);
-    color: #ff414e;
+    color: red;
     -ms-transform: translateY(4px);
     -webkit-transform: translateY(4px);
     transform: translateY(4px);
@@ -70,33 +93,24 @@ ul {
   line-height: 1.3em;
 }
 
-h1 {
-  text-align: center;
-  font-size: 2em;
-  letter-spacing: 0.05em;
-  padding-bottom: 50px;
-  color: antiquewhite;
-}
-
 
 table {
   margin: 0 auto;
-  width: 850px;
-  max-width: 1000px;
-  padding-top: 60px;
-  padding-left: 10px;
-  padding-right: 10px;
-  max-width: 800px;
+  padding: 60px, 60px;
+  min-width: 600px;
+  width: 60%;
+  max-width: 850px;
 	justify-content:center;
 	align-items:center;
-	min-height:80vh;
- 
+  background-color: hsla(220, 52%, 11%, 0.466);
 }
 
 th {
+  margin: 0 auto;
   background: #ffcc00;
   letter-spacing: 0.05em;
   font-family: 'Alegreya Sans SC';
+  font-weight: lighter;
   font-size: 1.50em;
   color: black;
   text-align: center;
@@ -104,6 +118,7 @@ th {
 }
 
 tr {
+  margin: 0 auto;
   min-height: 50px;
   background: rgba(0, 0, 0, 0);
 }
@@ -113,32 +128,47 @@ tr:nth-child(2n) {
 }
 
 td {
+  margin: 0 auto;
   color: antiquewhite;
   text-align: center;
-  font-family: 'Alegreya Sans SC';
+  font-family: 'Alegreya';
+  font-weight: lighter;
   font-size: 1.15em;
   letter-spacing: 0.03em;
+  max-height:100%;
+  white-space:nowrap;
+  height: 5em;
 }
 
 label {
-  font-weight: bold;
+  
+  padding-left: 1.25em;
+  
+  letter-spacing: 0.09em;
+  font-size: 1em;
+  color: white;
   min-width: 130px;
   display: inline-block;
   transition: 0.4s;
 }
 
 input {
+  
+  transform: translate(-50px);
   padding: 10px;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  border-radius: 2px;
-  border-color: #E7E7E7;
+  color: white;
+  font-size: 1em;
+  border-bottom:  solid white;
   transition: 0.4s;
+  border-radius: 5px;
+  
 }
 
 input[type=text] {
   margin-left: 7px;
   width: 300px;
+  background-color:hsla(220, 52%, 11%, 0.466); 
 }
 
 .error {
@@ -146,20 +176,28 @@ input[type=text] {
 }
 
 .search-form {
-  padding: 10px 10px 12px;
-  font-size: 0.875em;
-  top: 50px;
+  padding: 10px 12px;
+  font-size: 1em;
   position:absolute;
   top: 100px;
   right: 100px;
+  
+}
+
+::placeholder{
+  color:  white;
+  font-size: 1em;
+  letter-spacing: 0.05em;
 }
 
 .search-submit {
   outline: none;
-  border: 1px solid red;
-  font-size: 14px;
   margin: 2px;
   padding: 10px 15px;
   border-radius: auto;
+  border: 1px solid white;
+  font-size: 1em;
+  color: white;
   cursor: pointer;
+  background-color: hsla(214, 50%, 27%, 0.466);
 }

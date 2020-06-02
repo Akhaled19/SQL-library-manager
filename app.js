@@ -49,7 +49,7 @@ app.use(errorRoute);
 
                         /*Start Server*/
 sequelize.sync().then(() => {
-    app.listen(3000, () => {
-        console.log('This application is running on localhost:3000');
+    app.listen(5000, () => {
+        console.log('This application is running on localhost:5000');
     });
 });

@@ -1,5 +1,6 @@
 .pagination
     each page, index in pageLinkArray
         span
-            a(href=`/books/?page=${index}&term=${query}`) #{index + 1}
-a.button(href="../") Exist Search
+            a(class='page index' href=`/books/search/?q=${search}&page=${index}`) #{index + 1}
+        p.backButton
+            a.button(href="/books/?page=0") Exist Search

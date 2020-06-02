@@ -1,3 +1,4 @@
-each page, index in pageLinkArray
-    span
-        a.button(href=`/books/?page=${index}`) #{index + 1}
+.pagination
+    each page, index in pageLinkArray
+        span
+            a.button(href=`/books/?page=${index}`) #{index + 1}

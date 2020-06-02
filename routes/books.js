@@ -99,49 +99,51 @@ router.get('/', asyncHandler(async(req, res, next) => {
 
 
 //post search form to search the whole db.
-router.post('/search/:page', asyncHandler(async(req, res) => {
+router.get('/search/', asyncHandler(async(req, res, next) => {
     //capture the search form content
-    const search = req.body;
-    const page = parseInt(req.params.page) || 0; //page number
+    //let q = req.query.q;
+    //q = q.q.toLowerCase();
+    const search = req.query;
+
+    const page = parseInt(req.query.page) || 0; //page number
     const limit = 5;
     const offset = page  * limit;
     
-    //Have to use findAndCountAll so that the pagination works with search as well
-    //and doesn't break the home page. 
+    //shows the pages of the list of the books 
     //using Op to use like search for each column
     const books = await Book.findAndCountAll({ 
         order: [[ "title", "ASC"]],
-        limit: limit,
-        offset: offset,
+        limit,
+        offset,
         where: {
         [Op.or]: 
             [
                 {
                     title: {
-                        [Op.like]: `%${search.searchtext.toLowerCase()}%`
+                        [Op.like]: `%${search.search.toLowerCase()}%`
                     }
                 },
                 {
                     author: {
-                        [Op.like]: `%${search.searchtext.toLowerCase()}%`
+                        [Op.like]: `%${search.search.toLowerCase()}%`
                     }
                 },
                 {
                     genre: {
-                        [Op.like]: `%${search.searchtext.toLowerCase()}%`
+                        [Op.like]: `%${search.search.toLowerCase()}%`
                     }
                 },
                 {
                     year: {
-                        [Op.like]: `%${search.searchtext.toLowerCase()}%`
+                        [Op.like]: `%${search.search.toLowerCase()}%`
                     }
                 }
             ]    
-    } });
-
-    //const recordsPerPage = 10;
+        } 
+    });
+      
     //getting the num of pages for pagination
-    const numOfPages = Math.ceil(books.count / limit)
+    const numOfPages = Math.ceil(books.count / limit);
 
     //creates an array to iterate through in pug for the pag links
     const pageLinkArray = []
@@ -149,14 +151,21 @@ router.post('/search/:page', asyncHandler(async(req, res) => {
         pageLinkArray.push(i);
     }
 
-    res.render('index', { books: books.rows, title: 'All Books', pageLinkArray } );
+    if(page >= pageLinkArray.length) {
+        next();
+    } else {
+         res.render('index', {books: books.rows, pageLinkArray, title: "Search Result"});
+    }
+
 }));
+
 
 /* Get the new book form */
 router.get('/new', asyncHandler(async(req, res) => {
     //shows the create new book form
     res.render('form', { book:{}, title: 'New Book'});
 }));
+
 
 
 /* Post a new book entry */

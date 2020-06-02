@@ -1,11 +1,11 @@
 extends layout
 
 block content
-    h1 Library Application
+    h1.title Library Application
     p
         a.button(href='/books/new') Create New Book
-    form.search-form(action="/books/search/1", method="post")
-        input.search-input(type="text",placeholder="title,author etc..." name='searchtext')
+    form.search-form(action="/books/search/", method="get")
+        input.search-input(type="text",placeholder="title, author etc..." name='search')
         button.search-submit(type="submit") Search
     table
         thead
@@ -22,5 +22,7 @@ block content
                     td #{book.author}
                     td #{book.genre}
                     td #{book.year} 
-    .pagination                          
+    if search                           
+        include search-pagination
+    else 
         include pagination
