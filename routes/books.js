@@ -154,7 +154,7 @@ router.get('/search/', asyncHandler(async(req, res, next) => {
     if(page >= pageLinkArray.length) {
         next();
     } else {
-         res.render('index', {books: books.rows, pageLinkArray, title: "Search Result"});
+         res.render('index', {books: books.rows, search, pageLinkArray, title: "Search Result"});
     }
 
 }));
