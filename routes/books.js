@@ -103,7 +103,7 @@ router.get('/search/', asyncHandler(async(req, res, next) => {
     //capture the search form content
     //let q = req.query.q;
     //q = q.q.toLowerCase();
-    const search = req.query;
+    const search = req.query.search;
 
     const page = parseInt(req.query.page) || 0; //page number
     const limit = 5;
@@ -111,7 +111,7 @@ router.get('/search/', asyncHandler(async(req, res, next) => {
     
     //shows the pages of the list of the books 
     //using Op to use like search for each column
-    const books = await Book.findAndCountAll({ 
+    await Book.findAndCountAll({ 
         order: [[ "title", "ASC"]],
         limit,
         offset,
@@ -120,42 +120,50 @@ router.get('/search/', asyncHandler(async(req, res, next) => {
             [
                 {
                     title: {
-                        [Op.like]: `%${search.search.toLowerCase()}%`
+                        [Op.like]: `%${search.toLowerCase()}%`
                     }
                 },
                 {
                     author: {
-                        [Op.like]: `%${search.search.toLowerCase()}%`
+                        [Op.like]: `%${search.toLowerCase()}%`
                     }
                 },
                 {
                     genre: {
-                        [Op.like]: `%${search.search.toLowerCase()}%`
+                        [Op.like]: `%${search.toLowerCase()}%`
                     }
                 },
                 {
                     year: {
-                        [Op.like]: `%${search.search.toLowerCase()}%`
+                        [Op.like]: `%${search.toLowerCase()}%`
                     }
                 }
             ]    
         } 
-    });
-      
-    //getting the num of pages for pagination
-    const numOfPages = Math.ceil(books.count / limit);
+    })
+        .then((books) => {
+            console.log('this the search text: ' + search);
+        
+            //getting the num of pages for pagination
+            const numOfPages = Math.ceil(books.count / limit);
 
-    //creates an array to iterate through in pug for the pag links
-    const pageLinkArray = []
-    for (let i = 1; i <= numOfPages; i++) {
-        pageLinkArray.push(i);
-    }
+            //creates an array to iterate through in pug for the pag links
+            const pageLinkArray = []
+            for (let i = 1; i <= numOfPages; i++) {
+                pageLinkArray.push(i);
+            }
 
-    if(page >= pageLinkArray.length) {
-        next();
-    } else {
-         res.render('index', {books: books.rows, search, pageLinkArray, title: "Search Result"});
-    }
+            if(page >= pageLinkArray.length) {
+                res.redirect(`/books/search?search=${search}&page=0`);
+                //console.log('this the search text: ' + search);
+                next();
+            } else {
+                res.render('index', {books: books.rows, search, pageLinkArray});
+        }
+        })
+        .catch((error) => {
+            next(error)
+        });
 
 }));
 
