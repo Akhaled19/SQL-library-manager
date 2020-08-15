@@ -19,6 +19,7 @@ h1 {
   padding-bottom: 50px;
   padding-left: 1em;
   color: whitesmoke;
+  text-shadow: 1px 2px hsla(214, 50%, 27%, 0.466);
 }
 .title {
   text-align: center;
@@ -52,13 +53,13 @@ a {
 }
 
   a:hover {
-    color: red;
+    color: #ffcc00;
   }
 
 
 a.button, input[type=submit] {
-  color: black;
-  background: #ff414e;
+  color: wheat;
+  background-color: hsla(214, 50%, 27%, 0.466);
   padding: 10px 14px 12px;
   font-size: 14px;
   border-radius: 2px;
@@ -76,10 +77,12 @@ form a.button, input[type=submit] {
 
   a.button:hover, input[type=submit]:hover {
     background-color: rgba(0, 0, 0, 0);
-    color: red;
+    color: black;
+    font-weight: bold;
     -ms-transform: translateY(4px);
     -webkit-transform: translateY(4px);
     transform: translateY(4px);
+    border-color: #ffcc00;;
   }
 
 p {
@@ -200,4 +203,17 @@ input[type=text] {
   color: white;
   cursor: pointer;
   background-color: hsla(214, 50%, 27%, 0.466);
+}
+
+.pagination {
+  flex-wrap: wrap;
+  margin-top: 60px;
+  text-align: center;
+  
+}
+.pagination a{
+  padding: 10px 20px 10px 20px;
+  font-size: 1em;
+  background-color: #ffcc00;
+  color: black;
 }

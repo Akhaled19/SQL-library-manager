@@ -154,12 +154,13 @@ router.get('/search/', asyncHandler(async(req, res, next) => {
             }
 
             if(page >= pageLinkArray.length) {
-                res.redirect(`/books/search?search=${search}&page=0`);
+                
                 //console.log('this the search text: ' + search);
                 next();
             } else {
                 res.render('index', {books: books.rows, search, pageLinkArray});
-        }
+                res.redirect(`/books/search?search=${search}&page=0`);
+            }
         })
         .catch((error) => {
             next(error)
